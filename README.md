@@ -1,6 +1,8 @@
-# dg README
+# c4dsl README
 
-This is the README for your extension "dg". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "c4dsl". After writing up a brief description, we recommend including the following sections.
+
+# Run npm install
 
 ## Features
 
