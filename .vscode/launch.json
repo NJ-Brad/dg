@@ -15,6 +15,89 @@
 			  "args": ["${workspaceFolder}\\src\\sample.c4dsl", "${workspaceFolder}\\src\\sample.md"]
 			},
 			"preLaunchTask": "${defaultBuildTask}"
+		},
+		{
+			"name": "New Book",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceFolder}/out/dg.js",
+			"args": ["myFolder/path/app.js"],
+			"windows": {
+			  "args": ["new", "book", "${workspaceFolder}\\book"]
+			},
+			"preLaunchTask": "${defaultBuildTask}"
 		}	
+		,
+		{
+			"name": "New Section",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceFolder}/out/dg.js",
+			"args": ["myFolder/path/app.js"],
+			"windows": {
+			  "args": ["new", "section", "${workspaceFolder}\\book", "mysection"]
+			},
+			"preLaunchTask": "${defaultBuildTask}"
+		}		
+		,
+		{
+			"name": "New Section with space",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceFolder}/out/dg.js",
+			"args": ["myFolder/path/app.js"],
+			"windows": {
+			  "args": ["new", "section", "${workspaceFolder}\\book", "my space section"]
+			},
+			"preLaunchTask": "${defaultBuildTask}"
+		}				
+		,
+		{
+			"name": "New Page",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceFolder}/out/dg.js",
+			"args": ["myFolder/path/app.js"],
+			"windows": {
+			  "args": ["new", "page", "${workspaceFolder}\\book", "my space section", "firstarticle.md"]
+			},
+			"preLaunchTask": "${defaultBuildTask}"
+		}				
+		,
+		{
+			"name": "Edit Page",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceFolder}/out/dg.js",
+			"args": ["myFolder/path/app.js"],
+			"windows": {
+			  "args": ["edit", "${workspaceFolder}\\book", "my space section", "firstarticle.md"]
+			},
+			"preLaunchTask": "${defaultBuildTask}"
+		}				
+		,
+		{
+			"name": "Import Page",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceFolder}/out/dg.js",
+			"args": ["myFolder/path/app.js"],
+			"windows": {
+			  "args": ["import", "${workspaceFolder}\\book", "my space section", "firstarticle.md", "C:\\source\\GitHub\\dg\\readme.md" ]
+			},
+			"preLaunchTask": "${defaultBuildTask}"
+		}				
+		,
+		{
+			"name": "Bind",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceFolder}/out/dg.js",
+			"args": ["myFolder/path/app.js"],
+			"windows": {
+			  "args": ["bind", "${workspaceFolder}\\book", "${workspaceFolder}\\bound" ]
+			},
+			"preLaunchTask": "${defaultBuildTask}"
+		}				
 	]
 }
