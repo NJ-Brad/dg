@@ -74,6 +74,9 @@ export class CommandProcessor {
             case 'md':
                 newText = this.createDefaultMdFile();
                 break;
+            case 'C4DSL':
+                newText = this.createDefaultC4DslFile();
+                break;
             //     this.processNewBook(myArgs);
             //     break;
             // case 'section':
@@ -121,6 +124,49 @@ export class CommandProcessor {
         return sb.text;
     }
 
+    createDefaultC4DslFile(): string{
+        var sb:StringBuilder = new StringBuilder();
+        sb.appendLine("workspace ");
+        sb.appendLine("[");
+        sb.appendLine("    items");
+        sb.appendLine("    [");
+        sb.appendLine("        external_person customer \"Customer\" (\"A customer of the bank,`with personal bank accounts\")");
+        sb.appendLine("        enterprise e1 \"Big Co\"");
+        sb.appendLine("        [");
+        sb.appendLine("            system c1 \"Internet Banking\"");
+        sb.appendLine("            [");
+        sb.appendLine("                Container web_app \"Web Application\" utilizing \"Java, Spring MVC\" (\"Delivers the static content`and the Internet banking SPA\")");
+        sb.appendLine("                Container backend_api \"API Application\" utilizing \"Java, Docker Container\" (\"Provides Internet banking`functionality via API\")");
+        sb.appendLine("                Container spa \"Single-Page App\" utilizing \"JavaScript, Angular\" (\"Provides all the Internet banking`functionality to cutomers`via their web browser\")");
+        sb.appendLine("                Container mobile_app \"Mobile App\" utilizing \"C#, Xamarin\" (\"Provides a limited subset`of the Internet banking`functionality to customers`via their mobile device\")");
+        sb.appendLine("                Database database \"Database\" utilizing \"SQL Database\" (\"Stores user registration`information, hashed auth credentials,`access logs, etc.\")");
+        sb.appendLine("                [");
+        sb.appendLine("                    Table table1 \"Table 1\"");
+        sb.appendLine("                    Table table2 \"Table 2\"");
+        sb.appendLine("                    Table table3 \"Table 3\"");
+        sb.appendLine("                ]");
+        sb.appendLine("            ]");
+        sb.appendLine("            system banking_system \"Mainframe Banking System\"  (\"Stores all of the core`banking information about`customers, accounts, transactions, etc.\")");
+        sb.appendLine("        ]");
+        sb.appendLine("        external_system email_system \"E-Mail System\" (\"The internal`Microsoft Exchange system\")");
+        sb.appendLine("    ]");
+        sb.appendLine("    ");
+        sb.appendLine("    connections");
+        sb.appendLine("    [");
+        sb.appendLine("        customer Uses web_app utilizing \"HTTPS\"");
+        sb.appendLine("        customer Uses spa utilizing \"HTTPS\"");
+        sb.appendLine("        customer Uses mobile_app");
+        sb.appendLine("        web_app Delivers spa");
+        sb.appendLine("        spa Uses backend_api utilizing \"async, JSON/HTTPS\"");
+        sb.appendLine("        mobile_app Uses backend_api utilizing \"async, JSON/HTTPS\"");
+        sb.appendLine("        database \"Reads from and writes to\" backend_api utilizing \"sync, JDBC\"");
+        sb.appendLine("        email_system \"Sends e-mails to\" customer ");
+        sb.appendLine("        backend_api \"Sends e-mails using\" email_system utilizing \"sync, SMTP\"");
+        sb.appendLine("        backend_api Uses banking_system utilizing \"sync/async, XML/HTTPS\"");
+        sb.appendLine("    ]");
+        sb.appendLine("]");
+        return sb.text;
+    }
     processImportCommand(myArgs: string[]) {
         // copy file to selected book/section/page
         this.createDirectories2(myArgs[1], myArgs[2]);
