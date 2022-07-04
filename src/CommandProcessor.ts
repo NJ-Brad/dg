@@ -4,6 +4,22 @@ import { StringBuilder } from './Stringbuilder';
 import * as Crypto from 'crypto';
 import { tmpdir } from 'os';
 
+import { StringStream } from "./dsl/StringStream";
+import { MermaidRunner } from "./MermaidRunner";
+
+import { Block } from './dsl/Block';
+import { BlockParser } from './dsl/BlockParser';
+
+import { BlockToC4Converter} from "./dsl/c4/BlockToC4Converter";
+import { C4Workspace } from "./dsl/c4/C4Workspace";
+import { C4Publisher } from "./dsl/c4/c4Publisher";
+
+import { BlockToFlowchartConverter} from "./dsl/flow/BlockToFlowchartConverter";
+import { FlowchartWorkspace } from "./dsl/flow/FlowchartWorkspace";
+import { FlowchartPublisher } from "./dsl/flow/FlowchartPublisher";
+
+import * as mdConvert from "./MarkdownToHtml";
+
 export class CommandProcessor {
     public process(myArgs: string[]) {
         console.log('myArgs: ', myArgs);
@@ -224,13 +240,127 @@ export class CommandProcessor {
 
     bindFile(sourceFileName: string, destinationFolder: string) {
 
+        var ext = this.fileExtension(sourceFileName);
+        console.log(`Bind file with extension = ${ext}`);
+
+        switch(ext)
+        {
+            case "c4dsl":
+                this.bindC4DslFile(sourceFileName, destinationFolder);
+                break;
+            case "flow":
+                this.bindFlowDslFile(sourceFileName, destinationFolder);
+                break;
+            case "md":
+                this.bindMarkdownFile(sourceFileName, destinationFolder);
+                break;
+            }
+
+//         var filename = this.fileNameOnly(sourceFileName);
+
+//         var fullTargetName: string = path.join(destinationFolder, filename);
+
+//         var tmpFile = this.getTempFileName();
+
+// //        console.log(`${sourceFileName} --> ${fullTargetName}`);
+
+    }
+
+    bindC4DslFile(sourceFileName: string, destinationFolder: string) {
         var filename = this.fileNameOnly(sourceFileName);
 
-        var fullTargetName: string = path.join(destinationFolder, filename);
+        const fullText = fs.readFileSync(sourceFileName).toString('utf-8');
 
-        var tmpFile = this.getTempFileName();
+        var stream: StringStream;
+        stream = new StringStream(fullText);
+        
+        var bp: BlockParser = new BlockParser();
+        
+        var block: Block = new Block();
+        bp.parse(block.children, stream, 0);
+        
+        var btc4: BlockToC4Converter = new BlockToC4Converter();
+        
+        var ws: C4Workspace = btc4.convert(block);
+        
+        var publisher: C4Publisher = new C4Publisher();
+        
+        var newText = "";
+        // var path = require('path');
+        // var dirName = path.dirname(myArgs[0]);
+        var outName : string;
+        var imgName : string;
+        var rnr: MermaidRunner = new MermaidRunner();
 
-        console.log(`${sourceFileName} --> ${fullTargetName}`);
+        outName = this.getTempFileName();
+        imgName = path.join(destinationFolder, filename)+"-context.png";
+        newText = publisher.publish(ws, "Context", "PLANT");
+        fs.writeFileSync(outName, newText);
+        rnr.convert(`\"${outName}\"`, `\"${imgName}\"`);
+        console.log(`${sourceFileName} --> ${imgName}`);
+        
+        outName = this.getTempFileName();
+        imgName = path.join(destinationFolder, filename)+"-container.png";
+        newText = publisher.publish(ws, "Container", "PLANT");
+        fs.writeFileSync(outName, newText);
+        rnr.convert(`\"${outName}\"`, `\"${imgName}\"`);
+        console.log(`${sourceFileName} --> ${imgName}`);
+        
+        outName = this.getTempFileName();
+        imgName = path.join(destinationFolder, filename)+"-component.png";
+        newText = publisher.publish(ws, "Component", "PLANT");
+        fs.writeFileSync(outName, newText);
+        rnr.convert(`\"${outName}\"`, `\"${imgName}\"`);
+        console.log(`${sourceFileName} --> ${imgName}`);
+    }
+
+    bindFlowDslFile(sourceFileName: string, destinationFolder: string) {
+        var filename = this.fileNameOnly(sourceFileName);
+
+        const fullText = fs.readFileSync(sourceFileName).toString('utf-8');
+
+        var stream: StringStream;
+        stream = new StringStream(fullText);
+        
+        var bp: BlockParser = new BlockParser();
+        
+        var block: Block = new Block();
+        bp.parse(block.children, stream, 0);
+        
+        var btc4: BlockToFlowchartConverter = new BlockToFlowchartConverter();
+        
+        var ws: FlowchartWorkspace = btc4.convert(block);
+        
+        var publisher: FlowchartPublisher = new FlowchartPublisher();
+        
+        var newText = "";
+        // var path = require('path');
+        // var dirName = path.dirname(myArgs[0]);
+        var outName : string;
+        var imgName : string;
+        var rnr: MermaidRunner = new MermaidRunner();
+
+        outName = this.getTempFileName();
+        imgName = path.join(destinationFolder, filename)+".png";
+        newText = publisher.publish(ws, "MERMAID");
+        fs.writeFileSync(outName, newText);
+        rnr.convert(`\"${outName}\"`, `\"${imgName}\"`);
+        console.log(`${sourceFileName} --> ${imgName}`);
+    }
+
+    bindMarkdownFile(sourceFileName: string, destinationFolder: string) {
+        var filename = this.fileNameOnly(sourceFileName);
+
+        const fullText = fs.readFileSync(sourceFileName).toString('utf-8');
+
+        var newText = "";
+        var htmlName : string;
+
+        htmlName = path.join(destinationFolder, filename)+".html";
+        newText = mdConvert.markdownToHtml (fullText);
+
+        fs.writeFileSync(htmlName, newText);
+        console.log(`${sourceFileName} --> ${htmlName}`);
     }
 
     //https://stackoverflow.com/questions/7055061/nodejs-temporary-file-name    
@@ -274,7 +404,7 @@ export class CommandProcessor {
         if(fileExt === fileName){
             fileExt = "";
         }
-        return fileExt;
+        return fileExt.toLowerCase();
      }
 
      fileNameOnly(fileName:string) : string{
