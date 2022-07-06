@@ -11,10 +11,11 @@ export class BlockToFlowchartConverter
     public convert(block: Block) : FlowchartWorkspace {
         var rtnVal: FlowchartWorkspace = new FlowchartWorkspace();
 
-        var child: Block;
-        for (var bn = 0; bn < block.children.length; bn++)
-        {
-            child = block.children[bn];
+        for(var child of block.children){
+        // var child: Block;
+        // for (var bn = 0; bn < block.children.length; bn++)
+        // {
+        //     child = block.children[bn];
             if(this.ciEquals(child.blockText, "flow")) {
                 rtnVal = this.convertWorkspace(child);
             }
@@ -33,11 +34,12 @@ export class BlockToFlowchartConverter
      convertWorkspace(block: Block ) : FlowchartWorkspace {
         var rtnVal: FlowchartWorkspace  = new FlowchartWorkspace();
 
-            var child: Block;
-            var grandChild: Block;
-            for (var bn = 0; bn < block.children.length; bn++)
-            {
-                child = block.children[bn];
+        for(var child of block.children){
+            // var child: Block;
+            // var grandChild: Block;
+            // for (var bn = 0; bn < block.children.length; bn++)
+            // {
+            //     child = block.children[bn];
                 this.convertFlowItem(rtnVal.items, rtnVal.relationships, child);
             }
             this.linkItems(rtnVal.items, rtnVal.relationships);
@@ -48,23 +50,24 @@ export class BlockToFlowchartConverter
      linkItems(items: FlowchartItem[], connections: FlowchartRelationship[])
      {
         var prevItemName: string = "";
-        for (var itemNum = 0; itemNum < items.length; itemNum++)
-        {
+        for(var item of items){
+        // for (var itemNum = 0; itemNum < items.length; itemNum++)
+        // {
             if(prevItemName !== "")
             {
                 var newConn: FlowchartRelationship = new FlowchartRelationship();
                 newConn.label = " ";
                 newConn.from = prevItemName;
-                newConn.to = items[itemNum].id;
+                newConn.to = item.id;
                 connections.push(newConn);
             }
-            if(items[itemNum].itemType === "DECISION")
+            if(item.itemType === "DECISION")
             {
                 prevItemName = "";
             }
             else
             {
-                prevItemName = items[itemNum].id;
+                prevItemName = item.id;
             }
         }
     }
@@ -166,10 +169,11 @@ convertFlowItem(items: FlowchartItem[], connections: FlowchartRelationship[], bl
             newItem.id = itemId;
             newItem.description = description;
 
-            // this will allow for defining explicit "Next Step"
-            for (var cn = 0; cn < block.children.length; cn++)
-            {
-                 var child = block.children[cn];
+            for(var child of block.children){
+                // // this will allow for defining explicit "Next Step"
+            // for (var cn = 0; cn < block.children.length; cn++)
+            // {
+            //      var child = block.children[cn];
                  this.convertConnection(itemId, items, connections, child);
             }
 
@@ -185,9 +189,10 @@ convertFlowItem(items: FlowchartItem[], connections: FlowchartRelationship[], bl
             }
             newItem.id = itemId;
             newItem.description = description;
-            for (var cn = 0; cn < block.children.length; cn++)
-            {
-                 var child = block.children[cn];
+            for(var child of block.children){
+                // for (var cn = 0; cn < block.children.length; cn++)
+            // {
+            //      var child = block.children[cn];
                  this.convertConnection(itemId, items, connections, child);
             }
             items.push(newItem);

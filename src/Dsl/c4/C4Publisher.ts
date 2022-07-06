@@ -62,15 +62,17 @@ export class C4Publisher {
 
         sb.append(this.mermaidHeader(workspace));
 
-        var item: C4Item;
-        for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
-            item = workspace.items[itmNum];
+        for (var item of workspace.items) {
+        // var item: C4Item;
+        // for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
+        //     item = workspace.items[itmNum];
             sb.append(this.mermaidItem(item));
         }
 
-        var rel: C4Relationship;
-        for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
-            rel = workspace.relationships[relNum];
+        for (var rel of workspace.relationships) {
+        // var rel: C4Relationship;
+        // for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
+        //     rel = workspace.relationships[relNum];
             sb.append(this.mermaidConnection(rel));
         }
 
@@ -84,17 +86,19 @@ export class C4Publisher {
 
         this.createContextRedirects(workspace.items);
 
-        var item: C4Item;
-        for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
-            item = workspace.items[itmNum];
+        for (var item of workspace.items) {
+        //     var item: C4Item;
+        // for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
+        //     item = workspace.items[itmNum];
             sb.append(this.mermaidItem(item));
         }
 
         var connections: string[] = [];
-        var rel: C4Relationship;
+//        var rel: C4Relationship;
         var newConn: string;
-        for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
-            rel = workspace.relationships[relNum];
+        for (var rel of workspace.relationships) {
+        //for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
+        //    rel = workspace.relationships[relNum];
             newConn = this.mermaidConnection(rel);
 
             if (!this.isInList(newConn, connections)) {
@@ -112,15 +116,17 @@ export class C4Publisher {
 
         this.createContainerRedirects(workspace.items);
 
-        var item: C4Item;
-        for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
-            item = workspace.items[itmNum];
+        for (var item of workspace.items) {
+        // var item: C4Item;
+        // for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
+        //     item = workspace.items[itmNum];
             sb.append(this.mermaidItem(item));
         }
 
-        var rel: C4Relationship;
-        for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
-            rel = workspace.relationships[relNum];
+        for (var rel of workspace.relationships) {
+            // var rel: C4Relationship;
+        // for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
+        //     rel = workspace.relationships[relNum];
             sb.append(this.mermaidConnection(rel));
         }
 
@@ -136,15 +142,17 @@ export class C4Publisher {
 
         sb.append(this.plantHeader(workspace));
 
-        var item: C4Item;
-        for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
-            item = workspace.items[itmNum];
+        for (var item of workspace.items) {
+            // var item: C4Item;
+        // for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
+        //     item = workspace.items[itmNum];
             sb.append(this.plantItem(item));
         }
 
-        var rel: C4Relationship;
-        for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
-            rel = workspace.relationships[relNum];
+        for (var rel of workspace.relationships) {
+            // var rel: C4Relationship;
+        // for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
+        //     rel = workspace.relationships[relNum];
             sb.append(this.plantConnection(rel));
         }
 
@@ -158,17 +166,19 @@ export class C4Publisher {
 
         this.createContextRedirects(workspace.items);
 
-        var item: C4Item;
-        for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
-            item = workspace.items[itmNum];
+        for (var item of workspace.items) {
+        // var item: C4Item;
+        // for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
+        //     item = workspace.items[itmNum];
             sb.append(this.plantItem(item));
         }
 
         var connections: string[] = [];
-        var rel: C4Relationship;
+//        var rel: C4Relationship;
         var newConn: string;
-        for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
-            rel = workspace.relationships[relNum];
+        for (var rel of workspace.relationships) {
+        // for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
+        //     rel = workspace.relationships[relNum];
             newConn = this.plantConnection(rel);
 
             if (!this.isInList(newConn, connections)) {
@@ -187,15 +197,17 @@ export class C4Publisher {
 
         this.createContainerRedirects(workspace.items);
 
-        var item: C4Item;
-        for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
-            item = workspace.items[itmNum];
+        for (var item of workspace.items) {
+            // var item: C4Item;
+        // for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
+        //     item = workspace.items[itmNum];
             sb.append(this.plantItem(item));
         }
 
-        var rel: C4Relationship;
-        for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
-            rel = workspace.relationships[relNum];
+        for (var rel of workspace.relationships) {
+            // var rel: C4Relationship;
+        // for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
+        //     rel = workspace.relationships[relNum];
             sb.append(this.plantConnection(rel));
         }
 
@@ -205,8 +217,10 @@ export class C4Publisher {
     private isInList(lookFor: string, lookIn: string[]): boolean {
         var rtnVal: boolean = false;
 
-        for (var itmNum = 0; itmNum < lookIn.length; itmNum++) {
-            if(this.ciEquals(lookFor, lookIn[itmNum])){
+        for (var lookInItem of lookIn) {
+            // for (var itmNum = 0; itmNum < lookIn.length; itmNum++) {
+        //     if(this.ciEquals(lookFor, lookIn[itmNum])){
+            if(this.ciEquals(lookFor, lookInItem)){
                 rtnVal = true;
             }
         }

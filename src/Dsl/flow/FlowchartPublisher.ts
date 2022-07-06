@@ -28,17 +28,19 @@ export class FlowchartPublisher
 
         sb.append(this.mermaidHeader(workspace));
 
-        var item: FlowchartItem;
-        for (var itmNum = 0; itmNum < workspace.items.length; itmNum++)
-        {
-            item = workspace.items[itmNum];
+        for (var item of workspace.items) {
+        // var item: FlowchartItem;
+        // for (var itmNum = 0; itmNum < workspace.items.length; itmNum++)
+        // {
+            //item = workspace.items[itmNum];
             sb.append(this.mermaidItem(item));
         }
 
-        var rel: FlowchartRelationship;
-        for (var relNum = 0; relNum < workspace.relationships.length; relNum++)
-        {
-            rel = workspace.relationships[relNum];
+        for (var rel of workspace.relationships) {
+        // var rel: FlowchartRelationship;
+        // for (var relNum = 0; relNum < workspace.relationships.length; relNum++)
+        // {
+        //     rel = workspace.relationships[relNum];
             sb.append(this.mermaidConnection(rel));
         }
 
@@ -96,10 +98,11 @@ export class FlowchartPublisher
                     sb.appendLine(`${indentation}subgraph ${item.id}[${brokenLabel}]`);
                     indent++;
         
-                    var item2: FlowchartItem;
-                    for (var itmNum = 0; itmNum < item.items.length; itmNum++)
-                    {
-                        item2= item.items[itmNum];
+                    for (var item2 of item.items) {
+                        // var item2: FlowchartItem;
+                    // for (var itmNum = 0; itmNum < item.items.length; itmNum++)
+                    // {
+                    //     item2= item.items[itmNum];
                         sb.appendLine(this.mermaidItem(item2, indent).trimEnd());
                     }
                     sb.appendLine(`${indentation}end`);

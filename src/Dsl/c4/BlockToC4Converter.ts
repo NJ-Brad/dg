@@ -11,10 +11,11 @@ export class BlockToC4Converter
     public convert(block: Block) : C4Workspace {
         var rtnVal: C4Workspace = new C4Workspace();
 
-        var child: Block;
-        for (var bn = 0; bn < block.children.length; bn++)
-        {
-            child = block.children[bn];
+        for(var child of block.children){
+            // var child: Block;
+        // for (var bn = 0; bn < block.children.length; bn++)
+        // {
+        //     child = block.children[bn];
             if(this.ciEquals(child.blockText, "workspace")) {
                 rtnVal = this.convertWorkspace(child);
             }
@@ -33,24 +34,27 @@ export class BlockToC4Converter
      convertWorkspace(block: Block ) : C4Workspace {
         var rtnVal: C4Workspace  = new C4Workspace();
 
-            var child: Block;
-            var grandChild: Block;
-            for (var bn = 0; bn < block.children.length; bn++)
-            {
-                child = block.children[bn];
+            //var child: Block;
+            //var grandChild: Block;
+            for(var child of block.children){
+                // for (var bn = 0; bn < block.children.length; bn++)
+            // {
+            //     child = block.children[bn];
 
                 if(this.ciEquals(child.blockText, "items")) {
-                    for (var gcn = 0; gcn < child.children.length; gcn++)
-                    {
-                        grandChild = child.children[gcn];
+                    for(var grandChild of child.children){
+                        // for (var gcn = 0; gcn < child.children.length; gcn++)
+                    // {
+                    //     grandChild = child.children[gcn];
                         this.convertItem(rtnVal.items, grandChild);
                  }
              }
 
               if(this.ciEquals(child.blockText, "connections")) {
-                for (var gcn = 0; gcn < child.children.length; gcn++)
-                {
-                    grandChild = child.children[gcn];
+                for(var grandChild of child.children){
+                    // for (var gcn = 0; gcn < child.children.length; gcn++)
+                // {
+                //     grandChild = child.children[gcn];
                     this.convertConnection(rtnVal.relationships, grandChild);
                 }
             }
@@ -80,9 +84,13 @@ export class BlockToC4Converter
 
          var nextIsTechnology: boolean = false;
 
-            for (var pn = 0; pn < parts.length; pn++)
-            {
-                 var str = parts[pn];
+            var pn: number;
+            pn = 0;
+
+            for(var str of parts){
+                // for (var pn = 0; pn < parts.length; pn++)
+            // {
+            //      var str = parts[pn];
 
              if (pn === 0)
              {
@@ -112,6 +120,7 @@ export class BlockToC4Converter
                      label = str.trim();
                  }
              }
+             pn ++;
          }
 
          itemType = itemType.toUpperCase();
@@ -238,9 +247,10 @@ export class BlockToC4Converter
 
          if (newItem !== null)
          {
-            for (var cn = 0; cn < block.children.length; cn++)
-            {
-                 var child = block.children[cn];
+            for(var child of block.children){
+                // for (var cn = 0; cn < block.children.length; cn++)
+            // {
+            //      var child = block.children[cn];
                  this.convertItem(newItem.items, child);
              }
 
@@ -267,9 +277,13 @@ export class BlockToC4Converter
 
         var nextIsTechnology: boolean = false;
 
-        for (var pn = 0; pn < parts.length; pn++)
-        {
-            var str = parts[pn];
+        var pn: number;
+        pn = 0;
+
+        for(var str of parts){
+            // for (var pn = 0; pn < parts.length; pn++)
+        // {
+        //     var str = parts[pn];
             if (pn === 0)
             {
                 origin = str;
@@ -293,6 +307,7 @@ export class BlockToC4Converter
                     nextIsTechnology = false;
                 }
             }
+            pn ++;
         }
 
         newItem = new C4Relationship();
