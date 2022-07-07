@@ -1,4 +1,3 @@
-import { Block } from "../Block";
 import { C4Item } from "./C4Item";
 import { C4Relationship } from "./C4Relationship";
 import { C4Workspace } from "./C4Workspace";
@@ -63,16 +62,10 @@ export class C4Publisher {
         sb.append(this.mermaidHeader(workspace));
 
         for (var item of workspace.items) {
-        // var item: C4Item;
-        // for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
-        //     item = workspace.items[itmNum];
             sb.append(this.mermaidItem(item));
         }
 
         for (var rel of workspace.relationships) {
-        // var rel: C4Relationship;
-        // for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
-        //     rel = workspace.relationships[relNum];
             sb.append(this.mermaidConnection(rel));
         }
 
@@ -87,18 +80,12 @@ export class C4Publisher {
         this.createContextRedirects(workspace.items);
 
         for (var item of workspace.items) {
-        //     var item: C4Item;
-        // for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
-        //     item = workspace.items[itmNum];
             sb.append(this.mermaidItem(item));
         }
 
         var connections: string[] = [];
-//        var rel: C4Relationship;
         var newConn: string;
         for (var rel of workspace.relationships) {
-        //for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
-        //    rel = workspace.relationships[relNum];
             newConn = this.mermaidConnection(rel);
 
             if (!this.isInList(newConn, connections)) {
@@ -117,16 +104,10 @@ export class C4Publisher {
         this.createContainerRedirects(workspace.items);
 
         for (var item of workspace.items) {
-        // var item: C4Item;
-        // for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
-        //     item = workspace.items[itmNum];
             sb.append(this.mermaidItem(item));
         }
 
         for (var rel of workspace.relationships) {
-            // var rel: C4Relationship;
-        // for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
-        //     rel = workspace.relationships[relNum];
             sb.append(this.mermaidConnection(rel));
         }
 
@@ -143,16 +124,10 @@ export class C4Publisher {
         sb.append(this.plantHeader(workspace));
 
         for (var item of workspace.items) {
-            // var item: C4Item;
-        // for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
-        //     item = workspace.items[itmNum];
             sb.append(this.plantItem(item));
         }
 
         for (var rel of workspace.relationships) {
-            // var rel: C4Relationship;
-        // for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
-        //     rel = workspace.relationships[relNum];
             sb.append(this.plantConnection(rel));
         }
 
@@ -167,18 +142,12 @@ export class C4Publisher {
         this.createContextRedirects(workspace.items);
 
         for (var item of workspace.items) {
-        // var item: C4Item;
-        // for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
-        //     item = workspace.items[itmNum];
             sb.append(this.plantItem(item));
         }
 
         var connections: string[] = [];
-//        var rel: C4Relationship;
         var newConn: string;
         for (var rel of workspace.relationships) {
-        // for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
-        //     rel = workspace.relationships[relNum];
             newConn = this.plantConnection(rel);
 
             if (!this.isInList(newConn, connections)) {
@@ -198,16 +167,10 @@ export class C4Publisher {
         this.createContainerRedirects(workspace.items);
 
         for (var item of workspace.items) {
-            // var item: C4Item;
-        // for (var itmNum = 0; itmNum < workspace.items.length; itmNum++) {
-        //     item = workspace.items[itmNum];
             sb.append(this.plantItem(item));
         }
 
         for (var rel of workspace.relationships) {
-            // var rel: C4Relationship;
-        // for (var relNum = 0; relNum < workspace.relationships.length; relNum++) {
-        //     rel = workspace.relationships[relNum];
             sb.append(this.plantConnection(rel));
         }
 
@@ -218,9 +181,7 @@ export class C4Publisher {
         var rtnVal: boolean = false;
 
         for (var lookInItem of lookIn) {
-            // for (var itmNum = 0; itmNum < lookIn.length; itmNum++) {
-        //     if(this.ciEquals(lookFor, lookIn[itmNum])){
-            if(this.ciEquals(lookFor, lookInItem)){
+            if (this.ciEquals(lookFor, lookInItem)) {
                 rtnVal = true;
             }
         }
@@ -273,7 +234,7 @@ export class C4Publisher {
                     default:
                         this.createContainerRedirects(item.items);
                         break;
-                    }
+                }
             }
         }
     }
@@ -293,7 +254,7 @@ export class C4Publisher {
         return sb.text;
     }
 
-    private plantHeader(workspace: C4Workspace, diagramType: string = "Component" ): string {
+    private plantHeader(workspace: C4Workspace, diagramType: string = "Component"): string {
         var sb: StringBuilder = new StringBuilder();
 
         sb.appendLine(`C4${diagramType}`);
@@ -496,51 +457,10 @@ export class C4Publisher {
             case "DATABASE":
                 goDeeper = false;
                 displayType = this.diagramType;
-
-                // if (this.ciEquals(this.diagramType, "Container")) {
-                //     goDeeper = false;
-                //     displayType = "Container";
-                // }
-                // else if (item.items.length === 0) {
-                //     displayType = this.diagramType;
-                // }
-                // else if (this.ciEquals(this.diagramType, "Component")) {
-                //     displayType = "Component_Boundary";
-                // }
-                // else {
-                //    displayType = this.diagramType;
-                //}
-
-
-                // item.database = true;
-                // if (item.external) {
-                //     displayType = "System";
-                // }
-                // else {
-                //     if (this.ciEquals(this.diagramType, "Container")) {
-                //         goDeeper = false;
-                //         displayType = "Container";
-                //     }
-                //     else if (item.items.length === 0) {
-                //         displayType = "System";
-                //     }
-                //     else {
-                //         displayType = "System_Boundary";
-                //     }
-                // }
                 break;
         }
 
-        // var displayLabel: string = `\"<strong><u>${item.label}</u></strong>`;
-        // var brokenDescription: string = item.description.replace("`", "<br/>");
-
-        // if (item.description.length !== 0) {
-        //     displayLabel = displayLabel + `<br/>${brokenDescription}`;
-        // }
-
-        //displayLabel += `<br/>&#171;${displayType}&#187;\"`;
-
-        var plantText:string = this.formatPlantItem(displayType, item);
+        var plantText: string = this.formatPlantItem(displayType, item);
 
         if (!goDeeper || (item.items.length === 0)) {
             sb.appendLine(`${indentation}${plantText}`);
@@ -568,35 +488,29 @@ export class C4Publisher {
     private _id: string = "";
 
 
-    private formatPlantItem(command: string, item: C4Item) : string {
+    private formatPlantItem(command: string, item: C4Item): string {
         var sb: StringBuilder = new StringBuilder();
 
         sb.append(command);
 
-        if (item.database)
-        {
+        if (item.database) {
             sb.append("Db");
         }
-        if (item.external)
-        {
+        if (item.external) {
             sb.append("_Ext");
         }
 
         sb.append("(");
 
-        //sb.append(Parameters[0]);
         sb.append(item.id);
 
-        if (item.label !== "")
-        {
+        if (item.label !== "") {
             sb.append(`, \"${item.label}\"`);
 
-            if (item.description !== "")
-            {
+            if (item.description !== "") {
                 sb.append(`, \"${item.description}\"`);
 
-                if (item.technology !== "")
-                {
+                if (item.technology !== "") {
                     sb.append(`, \"${item.technology}\"`);
                 }
             }
@@ -632,15 +546,9 @@ export class C4Publisher {
 
         if (redirected || (rel.technology.length === 0)) {
             sb.appendLine(`${indentation}Rel(${from}, ${to}, \"${rel.label}\")`);
-
-            // sb.append(`${indentation}${from}--\"${rel.label}\"-->${to}`);
-            // sb.append("\r\n");
         }
         else {
             sb.appendLine(`${indentation}Rel(${from}, ${to}, \"${rel.label}\", \"${rel.technology}\")`);
-            
-            // sb.append(`${indentation}${from}--\"${rel.label}<br>[${rel.technology}]\"-->${to}`);
-            // sb.append("\r\n");
         }
 
         return sb.text;
@@ -652,5 +560,4 @@ export class C4Publisher {
             ? a.localeCompare(b, undefined, { sensitivity: 'accent' }) === 0
             : a === b;
     }
-
 }

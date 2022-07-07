@@ -1,5 +1,4 @@
-export class C4Relationship
-{
+export class C4Relationship {
     public from: string = "";
     public to: string = "";
     public label: string = "";
