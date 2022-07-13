@@ -1,0 +1,89 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+#frameContainer {
+<!--    position: fixed; -->
+    height: 100%;
+    top:0px;
+<!--    left: 160px; -->
+    right:0px;
+    bottom:0px;
+    z-index:1;
+	/* Take the remaining width */
+	flex: 1;
+
+	/* Misc */
+	display: flex;
+}
+#main_iframe{
+    height: 100%;
+    width: 100%;
+}
+nav {
+<!--	position:fixed; -->
+    left:0px; 
+    top:0px; 
+    bottom:0px; 
+<!--    width:160px;  -->
+    width: 20%;
+    background:#333; 
+    color:#fff; 
+    z-index:2
+                display: flex;
+                justify-content: center;
+}
+a.page:link {
+	color:#ffffff;
+	text-decoration: none;
+	}
+a.page:visited {
+	color:#ffffff;
+    text-decoration: none;
+	}
+a.page:hover {
+	color:#ffffff;
+	text-decoration: underline;
+	}
+a.page:active {
+	color:#ffffff;
+	text-decoration: underline;
+}
+
+ .container {
+                display: flex;
+
+                /* Misc */
+                border: 1px solid #cbd5e0;
+                /* height: 16rem; */
+				height: 100%;
+                width: 100%;
+            }
+            .container__left {
+                /* Initially, the left takes 3/4 width */
+                width: 75%;
+
+                /* Misc */
+                align-items: center;
+                display: flex;
+                justify-content: center;
+            }
+            .resizer {
+                background-color: #cbd5e0;
+                cursor: ew-resize;
+                height: 100%;
+                width: 5px;
+            }
+            .container__right {
+                /* Take the remaining width */
+                flex: 1;
+
+                /* Misc */
+                align-items: center;
+                display: flex;
+                justify-content: center;
+            }
+			

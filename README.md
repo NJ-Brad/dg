@@ -70,3 +70,26 @@ Ensure that you've read through the extensions guidelines and follow the best pr
 * [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
 **Enjoy!**
+
+
+# Generating Document Framework Function
+* Create a function in your source code, similar to below
+```
+    createCssFile(): string{
+        var sb:StringBuilder = new StringBuilder();
+        // content gets pasted here
+        return sb.text;
+    }
+```
+* Create a text file of the content you want to include
+* Open Excel
+* Create new sheet
+* Paste the contents of the document you created into the sheet, in column A
+* Copy the following formula into column K
+```
+=+CHAR(9)&"sb.appendLine("&CHAR(34)&IF(ISBLANK(A1), "  ", A1)&IF(ISBLANK(B1), "  ", B1)&IF(ISBLANK(C1), "  ", C1)&IF(ISBLANK(D1), "  ", D1)&IF(ISBLANK(E1), "  ", E1)&IF(ISBLANK(F1), "  ", F1)&CHAR(34)&";"
+```
+* Copy the formula down, so that all pasted rows now have a formula in column K
+* Copy the contents of column K
+* Paste into your function, replacing the section that reads // content gets pasted here
+

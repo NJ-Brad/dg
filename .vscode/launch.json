@@ -99,5 +99,17 @@
 			},
 			"preLaunchTask": "${defaultBuildTask}"
 		}				
+		,
+		{
+			"name": "Func Gen",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceFolder}/out/dg.js",
+			"args": ["myFolder/path/app.js"],
+			"windows": {
+			  "args": ["funcgen", "${workspaceFolder}\\Templates\\Index.html", "${workspaceFolder}\\Templates\\Index_html.txt", "generateDefaultIndexFile" ]
+			},
+			"preLaunchTask": "${defaultBuildTask}"
+		}				
 	]
 }
