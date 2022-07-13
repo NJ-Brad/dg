@@ -1,12 +1,10 @@
 
-    export class Block
-    {
-        public blockText: string;
-        public children: Block[] = [];
+export class Block {
+    public blockText: string;
+    public children: Block[] = [];
 
-        constructor() 
-        {
-            this.blockText = "";
-            this.children = [];
-        }        
+    constructor() {
+        this.blockText = "";
+        this.children = [];
     }
+}

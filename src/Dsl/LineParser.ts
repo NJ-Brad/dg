@@ -1,9 +1,8 @@
 import { StringBuilder } from "../Stringbuilder";
 
-export class LineParser
-{
+export class LineParser {
     // Escape characters are not available in strucurizr  https://github.com/neovim/neovim/issues/17413
-    public parse(lineText: string) : string[] {
+    public parse(lineText: string): string[] {
         var parts: string[] = [];
         var sb: StringBuilder = new StringBuilder();
 
@@ -11,26 +10,21 @@ export class LineParser
 
         var character: string;
 
-        for (var i = 0; i < lineText.length; i++) 
-        {
+        for (var i = 0; i < lineText.length; i++) {
             character = lineText.charAt(i);
-            switch (character)
-            {
+            switch (character) {
                 case '"':
                     inQuote = !inQuote;
                     //sb.Append(character);
                     break;
                 case ' ':
                 case '\t':
-                    if (inQuote)
-                    {
+                    if (inQuote) {
                         sb.append(character);
                     }
-                    else
-                    {
+                    else {
                         // this avoids creating blank fields
-                        if (sb.text.length > 0)
-                        {
+                        if (sb.text.length > 0) {
                             // treat as end of field
                             parts.push(sb.text.trim());
                             sb.text = "";
@@ -43,8 +37,7 @@ export class LineParser
             }
         }
 
-        if (sb.text.length > 0)
-        {
+        if (sb.text.length > 0) {
             parts.push(sb.text.trim());
             sb.text = "";
         }

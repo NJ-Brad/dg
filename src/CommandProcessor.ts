@@ -97,17 +97,6 @@ export class CommandProcessor {
             case 'C4DSL':
                 newText = this.createDefaultC4DslFile();
                 break;
-            //     this.processNewBook(myArgs);
-            //     break;
-            // case 'section':
-            //     this.processImportSection(myArgs);
-            //     break;
-            // case 'page':
-            //     this.processImportPage(myArgs);
-            //     break;
-            //     default:
-            //     console.log('Sorry, that is not something I know how to do.');
-            //     break;
         }
 
         fs.writeFileSync(pageFileName, newText);

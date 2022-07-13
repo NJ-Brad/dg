@@ -1,5 +1,4 @@
-export class StringStream
-{
+export class StringStream {
     text: string;
     position: number;
 
@@ -8,24 +7,24 @@ export class StringStream
         this.position = 0;
     }
 
-    public peek() : string {
+    public peek(): string {
         var rtnVal: string = "";
-        if (!this.isEnd()){
+        if (!this.isEnd()) {
             rtnVal = this.text[this.position];
         }
         return rtnVal;
     }
 
-    public read() : string {
+    public read(): string {
         var rtnVal: string = "";
-        if (!this.isEnd()){
+        if (!this.isEnd()) {
             rtnVal = this.text[this.position];
-            this.position ++;
+            this.position++;
         }
         return rtnVal;
     }
 
-    public isEnd() : boolean {
+    public isEnd(): boolean {
         return (this.position >= this.text.length);
     }
 }
