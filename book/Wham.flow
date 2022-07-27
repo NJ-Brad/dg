@@ -1,0 +1,84 @@
+flow 
+[
+	' https://mermaid-js.github.io/mermaid/#/flowchart
+    Start
+    "Loan Type"
+	"Home Description"
+	"Property Use"
+    decision "Loan Type = Purchase?"
+	[
+		Yes ttp
+		No d1
+	]
+	"Timeframe to Purchase" ttp
+	"First Time Home Buyer"
+	[
+		_ a10
+	]
+	decision "Loan Type = Refinance?" d1
+	[
+		Yes lprc
+		No hv
+	]
+	"Loan Purpose Refi slash Cashout" lprc
+	"Home Value" hv
+
+	decision "Loan Purpose = Refi slash Cashout" d2
+	[
+		Yes mb
+		No d3
+	]
+	"Mortgage Balance" mb
+	decision "Loan Type = Cashout`OR Loan Purpose = Cashout Refi`OR Loan Purpose = Take Cash Out" d3 
+	[
+		Yes a9
+		No a10
+	]
+	action "Additional Funds" a9
+	"Military" a10
+	decision "Loan Type = Purchase"
+	[
+		Yes a11
+		No "Credit Profile"
+	]
+	"Working w/Agent" a11
+	"Purchase Price"
+	"Down Payment"
+	"Credit Profile"
+	decision "Loan Type = Refi slash C.O." ltrsco
+	[
+		Yes "Second Mortgage"
+		No qpv
+	]
+	"Second Mortgage"
+	decision "QPV = NoEmp" qpv
+	[
+		No "Employment Status"
+		Yes d7
+	]
+	decision "Loan Type = Purchase`And F.T.H.B. = No" d7
+	[
+		No "Bankruptcy"
+		Yes "Late Payments"
+	]
+	"Late Payments"
+	"Foreclosure"
+	[
+		_ "Bankruptcy"
+	]
+	"Employment Status"
+	"Bankruptcy"
+	"Name"
+	"Home Phone"
+	"Email"
+	"Address and Zip" anz
+	action "Submit Transaction" a24
+'	sub "Verify Results"
+	decision "Error" d8
+	[
+		Yes anz
+		No redirect
+	]
+	"Redirect to slash thank-you" redirect
+	End
+]
