@@ -21,6 +21,7 @@ import { FlowchartPublisher } from "./dsl/flow/FlowchartPublisher";
 import * as mdConvert from "./MarkdownToHtml";
 
 export class CommandProcessor {
+
     public process(myArgs: string[]) {
         console.log('myArgs: ', myArgs);
 
@@ -36,6 +37,9 @@ export class CommandProcessor {
                 break;
             case 'bind':
                 this.processBindCommand(myArgs);
+                break;
+            case 'funcgen':
+                this.processFuncGenCommand(myArgs);
                 break;
             default:
                 console.log('Sorry, that is not something I know how to do.');
@@ -172,6 +176,284 @@ export class CommandProcessor {
         sb.appendLine("]");
         return sb.text;
     }
+
+    processFuncGenCommand(myArgs: string[]) {
+        // copy file to selected book/section/page
+//        this.createDirectories2(myArgs[1], myArgs[2]);
+// 1 = input file
+// 2 = output file
+// 3 = function name
+
+        const fs = require('fs');
+
+        const fullText = fs.readFileSync(myArgs[1]).toString('utf-8');
+
+        const arr = fullText.toString().replace(/\r\n/g,'\n').split('\n');
+
+        var sb:StringBuilder = new StringBuilder();
+        sb.appendLine(`${myArgs[3]}(): string{ `);
+        sb.appendLine(`     var sb:StringBuilder = new StringBuilder();`);
+    //     // content gets pasted here
+    //     return sb.text;
+    // }
+
+        var tweakedText: string = "";
+
+        for(let i of arr) {
+            //console.log(i);
+            tweakedText = i;
+
+            sb.appendLine(`     sb.appendLine(\`${tweakedText}\`);`);
+        }
+
+        // fs.readFile(myArgs[1], function(err: any, data: any) {
+        //     if(err){ throw err;}
+
+        //     const arr = data.toString().replace(/\r\n/g,'\n').split('\n');
+
+        //     for(let i of arr) {
+        //         console.log(i);
+        //     }
+        // });
+
+        sb.appendLine(`     return sb.text;`);
+        sb.appendLine(`}`);
+
+        fs.writeFileSync(myArgs[2], sb.text);
+    }
+
+    generateDefaultCssFile(): string{ 
+        var sb:StringBuilder = new StringBuilder();
+        sb.appendLine(`html, body {`);
+        sb.appendLine(`    height: 100%;`);
+        sb.appendLine(`    width: 100%;`);
+        sb.appendLine(`    position: relative;`);
+        sb.appendLine(`    margin: 0;`);
+        sb.appendLine(`    padding: 0;`);
+        sb.appendLine(`}`);
+        sb.appendLine(`#frameContainer {`);
+        sb.appendLine(`<!--    position: fixed; -->`);
+        sb.appendLine(`    height: 100%;`);
+        sb.appendLine(`    top:0px;`);
+        sb.appendLine(`<!--    left: 160px; -->`);
+        sb.appendLine(`    right:0px;`);
+        sb.appendLine(`    bottom:0px;`);
+        sb.appendLine(`    z-index:1;`);
+        sb.appendLine(`	/* Take the remaining width */`);
+        sb.appendLine(`	flex: 1;`);
+        sb.appendLine(``);
+        sb.appendLine(`	/* Misc */`);
+        sb.appendLine(`	display: flex;`);
+        sb.appendLine(`}`);
+        sb.appendLine(`#main_iframe{`);
+        sb.appendLine(`    height: 100%;`);
+        sb.appendLine(`    width: 100%;`);
+        sb.appendLine(`}`);
+        sb.appendLine(`nav {`);
+        sb.appendLine(`<!--	position:fixed; -->`);
+        sb.appendLine(`    left:0px; `);
+        sb.appendLine(`    top:0px; `);
+        sb.appendLine(`    bottom:0px; `);
+        sb.appendLine(`<!--    width:160px;  -->`);
+        sb.appendLine(`    width: 20%;`);
+        sb.appendLine(`    background:#333; `);
+        sb.appendLine(`    color:#fff; `);
+        sb.appendLine(`    z-index:2`);
+        sb.appendLine(`                display: flex;`);
+        sb.appendLine(`                justify-content: center;`);
+        sb.appendLine(`}`);
+        sb.appendLine(`a.page:link {`);
+        sb.appendLine(`	color:#ffffff;`);
+        sb.appendLine(`	text-decoration: none;`);
+        sb.appendLine(`	}`);
+        sb.appendLine(`a.page:visited {`);
+        sb.appendLine(`	color:#ffffff;`);
+        sb.appendLine(`    text-decoration: none;`);
+        sb.appendLine(`	}`);
+        sb.appendLine(`a.page:hover {`);
+        sb.appendLine(`	color:#ffffff;`);
+        sb.appendLine(`	text-decoration: underline;`);
+        sb.appendLine(`	}`);
+        sb.appendLine(`a.page:active {`);
+        sb.appendLine(`	color:#ffffff;`);
+        sb.appendLine(`	text-decoration: underline;`);
+        sb.appendLine(`}`);
+        sb.appendLine(``);
+        sb.appendLine(` .container {`);
+        sb.appendLine(`                display: flex;`);
+        sb.appendLine(``);
+        sb.appendLine(`                /* Misc */`);
+        sb.appendLine(`                border: 1px solid #cbd5e0;`);
+        sb.appendLine(`                /* height: 16rem; */`);
+        sb.appendLine(`				height: 100%;`);
+        sb.appendLine(`                width: 100%;`);
+        sb.appendLine(`            }`);
+        sb.appendLine(`            .container__left {`);
+        sb.appendLine(`                /* Initially, the left takes 3/4 width */`);
+        sb.appendLine(`                width: 75%;`);
+        sb.appendLine(``);
+        sb.appendLine(`                /* Misc */`);
+        sb.appendLine(`                align-items: center;`);
+        sb.appendLine(`                display: flex;`);
+        sb.appendLine(`                justify-content: center;`);
+        sb.appendLine(`            }`);
+        sb.appendLine(`            .resizer {`);
+        sb.appendLine(`                background-color: #cbd5e0;`);
+        sb.appendLine(`                cursor: ew-resize;`);
+        sb.appendLine(`                height: 100%;`);
+        sb.appendLine(`                width: 5px;`);
+        sb.appendLine(`            }`);
+        sb.appendLine(`            .container__right {`);
+        sb.appendLine(`                /* Take the remaining width */`);
+        sb.appendLine(`                flex: 1;`);
+        sb.appendLine(``);
+        sb.appendLine(`                /* Misc */`);
+        sb.appendLine(`                align-items: center;`);
+        sb.appendLine(`                display: flex;`);
+        sb.appendLine(`                justify-content: center;`);
+        sb.appendLine(`            }`);
+        sb.appendLine(`			`);
+        return sb.text;
+   }
+
+   generateDefaultIndexFile(navTreeText: string): string{ 
+    var sb:StringBuilder = new StringBuilder();
+    sb.appendLine(`<html lang="en" xml:lang="en" xmlns= "http://www.w3.org/1999/xhtml">`);
+    sb.appendLine(`<meta charset="UTF-8">`);
+    sb.appendLine(`<meta name="google" content="notranslate">`);
+    sb.appendLine(`<meta http-equiv="Content-Language" content="en">`);
+    sb.appendLine(`<head>`);
+    sb.appendLine(`<link rel="stylesheet" href="index.css">`);
+    sb.appendLine(`</head>`);
+    sb.appendLine(`<body>`);
+    sb.appendLine(``);
+    sb.appendLine(`<!-- resizing is from https://htmldom.dev/create-resizable-split-views/ -->`);
+    sb.appendLine(`<!-- an alternate https://www.cssscript.com/tag/split-layout/ -->`);
+    sb.appendLine(`<!-- an alternate https://code-boxx.com/css-collapsible-tree-menu/ -->`);
+    sb.appendLine(``);
+    sb.appendLine(`<script type="text/javascript">`);
+    sb.appendLine(`function iframeDidLoad() {`);
+    sb.appendLine(`    alert('Done');`);
+    sb.appendLine(`}`);
+    sb.appendLine(``);
+    sb.appendLine(`function newSite(navPageUrl) {`);
+    sb.appendLine(`<!-- function newSite(){ -->`);
+    sb.appendLine(`    var sites = ['http://getprismatic.com',`);
+    sb.appendLine(`                 'http://gizmodo.com/',`);
+    sb.appendLine(`                 'http://lifehacker.com/']`);
+    sb.appendLine(``);
+    sb.appendLine(`<!--    document.getElementById('main_iframe').src = sites[Math.floor(Math.random() * sites.length)]; -->`);
+    sb.appendLine(`	document.getElementById('main_iframe').src = navPageUrl;`);
+    sb.appendLine(`}`);
+    sb.appendLine(``);
+    sb.appendLine(`</script>`);
+    sb.appendLine(``);
+    sb.appendLine(`<h1>Sample Document</h1>`);
+    sb.appendLine(``);
+    sb.appendLine(`<div class="container">`);
+    sb.appendLine(``);
+    sb.appendLine(`    <!-- Left element -->`);
+    sb.appendLine(`<!--    <div class="container__left">Left</div> -->`);
+    sb.appendLine(`<!-- <div class="container__left"> -->`);
+    sb.appendLine(`<nav>`);
+    sb.appendLine(`${navTreeText}`);
+    // sb.appendLine(`	<ul>`);
+    // sb.appendLine(`		<li>My Space Section</li>`);
+    // sb.appendLine(`			<ul>`);
+    // sb.appendLine(`				<li><a href="#" class="page" onClick="newSite(\`my%20space%20section/combined.html\`)">Combined</a></li>`);
+    // sb.appendLine(`				<li>Images</li>`);
+    // sb.appendLine(`				<ul>`);
+    // sb.appendLine(`					<li><a href="#" class="page" onClick="newSite(\`my%20space%20section/My%20crazy%20idea-context.png\`)">Context Diagram</a></li>				`);
+    // sb.appendLine(`				</ul>`);
+    // sb.appendLine(`			</ul>`);
+    // sb.appendLine(`        <li>Item2</li>`);
+    // sb.appendLine(`	</ul>`);
+    sb.appendLine(`</nav>`);
+    sb.appendLine(`<!-- </div> -->`);
+    sb.appendLine(``);
+    sb.appendLine(`    <!-- The resizer -->`);
+    sb.appendLine(`    <div class="resizer" id="dragMe"></div>`);
+    sb.appendLine(``);
+    sb.appendLine(`<!-- <input type="button" value="Change site" onClick="newSite()" /> -->`);
+    sb.appendLine(`<!-- <iframe id="myIframe" src="http://getprismatic.com/" onLoad="iframeDidLoad();"></iframe>      -->`);
+    sb.appendLine(``);
+    sb.appendLine(`    <!-- Right element -->`);
+    sb.appendLine(`<!--    <div class="container__right">Right</div> -->`);
+    sb.appendLine(`<div id="frameContainer"  class="container__right">`);
+    sb.appendLine(`  <iframe width="100%" height="100%" frameborder="0" name="product_iframe" id="main_iframe">Content should appear here</iframe>`);
+    sb.appendLine(`</div>`);
+    sb.appendLine(``);
+    sb.appendLine(`</div>`);
+    sb.appendLine(``);
+    sb.appendLine(`<script>`);
+    sb.appendLine(`document.addEventListener('DOMContentLoaded', function () {`);
+    sb.appendLine(`                // Query the element`);
+    sb.appendLine(`                const resizer = document.getElementById('dragMe');`);
+    sb.appendLine(`                const leftSide = resizer.previousElementSibling;`);
+    sb.appendLine(`                const rightSide = resizer.nextElementSibling;`);
+    sb.appendLine(``);
+    sb.appendLine(`                // The current position of mouse`);
+    sb.appendLine(`                let x = 0;`);
+    sb.appendLine(`                let y = 0;`);
+    sb.appendLine(`                let leftWidth = 0;`);
+    sb.appendLine(``);
+    sb.appendLine(`                // Handle the mousedown event`);
+    sb.appendLine(`                // that's triggered when user drags the resizer`);
+    sb.appendLine(`                const mouseDownHandler = function (e) {`);
+    sb.appendLine(`                    // Get the current mouse position`);
+    sb.appendLine(`                    x = e.clientX;`);
+    sb.appendLine(`                    y = e.clientY;`);
+    sb.appendLine(`                    leftWidth = leftSide.getBoundingClientRect().width;`);
+    sb.appendLine(``);
+    sb.appendLine(`                    // Attach the listeners to \`document\``);
+    sb.appendLine(`                    document.addEventListener('mousemove', mouseMoveHandler);`);
+    sb.appendLine(`                    document.addEventListener('mouseup', mouseUpHandler);`);
+    sb.appendLine(`                };`);
+    sb.appendLine(``);
+    sb.appendLine(`                const mouseMoveHandler = function (e) {`);
+    sb.appendLine(`                    // How far the mouse has been moved`);
+    sb.appendLine(`                    const dx = e.clientX - x;`);
+    sb.appendLine(`                    const dy = e.clientY - y;`);
+    sb.appendLine(``);
+    sb.appendLine(`                    const newLeftWidth = ((leftWidth + dx) * 100) / resizer.parentNode.getBoundingClientRect().width;`);
+    sb.appendLine(`                    leftSide.style.width = \`\${newLeftWidth}%\`;`);
+    sb.appendLine(``);
+    sb.appendLine(`                    resizer.style.cursor = 'col-resize';`);
+    sb.appendLine(`                    document.body.style.cursor = 'col-resize';`);
+    sb.appendLine(``);
+    sb.appendLine(`                    leftSide.style.userSelect = 'none';`);
+    sb.appendLine(`                    leftSide.style.pointerEvents = 'none';`);
+    sb.appendLine(``);
+    sb.appendLine(`                    rightSide.style.userSelect = 'none';`);
+    sb.appendLine(`                    rightSide.style.pointerEvents = 'none';`);
+    sb.appendLine(`                };`);
+    sb.appendLine(``);
+    sb.appendLine(`                const mouseUpHandler = function () {`);
+    sb.appendLine(`                    resizer.style.removeProperty('cursor');`);
+    sb.appendLine(`                    document.body.style.removeProperty('cursor');`);
+    sb.appendLine(``);
+    sb.appendLine(`                    leftSide.style.removeProperty('user-select');`);
+    sb.appendLine(`                    leftSide.style.removeProperty('pointer-events');`);
+    sb.appendLine(``);
+    sb.appendLine(`                    rightSide.style.removeProperty('user-select');`);
+    sb.appendLine(`                    rightSide.style.removeProperty('pointer-events');`);
+    sb.appendLine(``);
+    sb.appendLine(`                    // Remove the handlers of \`mousemove\` and \`mouseup\``);
+    sb.appendLine(`                    document.removeEventListener('mousemove', mouseMoveHandler);`);
+    sb.appendLine(`                    document.removeEventListener('mouseup', mouseUpHandler);`);
+    sb.appendLine(`                };`);
+    sb.appendLine(``);
+    sb.appendLine(`                // Attach the handler`);
+    sb.appendLine(`                resizer.addEventListener('mousedown', mouseDownHandler);`);
+    sb.appendLine(`            });`);
+    sb.appendLine(`</script>`);
+    sb.appendLine(`  `);
+    sb.appendLine(`</body>`);
+    sb.appendLine(`</html>`);
+    sb.appendLine(``);
+    return sb.text;
+}
+
     processImportCommand(myArgs: string[]) {
         // copy file to selected book/section/page
         this.createDirectories2(myArgs[1], myArgs[2]);
@@ -192,11 +474,43 @@ export class CommandProcessor {
 
     processBindCommand(myArgs: string[]) {
         // book is myArgs[1]
-        this.bindFolder(myArgs[1], myArgs[2]);
+
+        var fullName: string = path.join(myArgs[2], "index.css");
+
+        fs.writeFileSync(fullName, this.generateDefaultCssFile());
+
+        var navTree: StringBuilder = new StringBuilder();
+
+        this.bindFolder(myArgs[1], myArgs[2], myArgs[2], navTree);
+
+        console.log('Navigation: ', navTree.text);
+
+        fullName = path.join(myArgs[2], "index.html");
+        fs.writeFileSync(fullName, this.generateDefaultIndexFile(navTree.text));
     }
 
-    bindFolder(sourceFolder: string, destinationFolder: string) {
+
+    // sb.appendLine(`		<li>My Space Section</li>`);
+    // sb.appendLine(`			<ul>`);
+    // sb.appendLine(`				<li><a href="#" class="page" onClick="newSite(\`my%20space%20section/combined.html\`)">Combined</a></li>`);
+    // sb.appendLine(`				<li>Images</li>`);
+    // sb.appendLine(`				<ul>`);
+    // sb.appendLine(`					<li><a href="#" class="page" onClick="newSite(\`my%20space%20section/My%20crazy%20idea-context.png\`)">Context Diagram</a></li>				`);
+    // sb.appendLine(`				</ul>`);
+    // sb.appendLine(`			</ul>`);
+    // sb.appendLine(`        <li>Item2</li>`);
+
+
+    bindFolder(sourceFolder: string, destinationFolder: string, rootFolder: string, navTree:StringBuilder) {
         this.createDirectories(destinationFolder);
+
+        var filename = this.fileNameOnly(sourceFolder);
+
+        // don't include the parent folder as a part of the navigation
+        if(navTree.text.length > 0){
+            navTree.appendLine(`<li>${filename}</li>`);
+        }
+        navTree.appendLine(`<ul>`);
 
         var fileNames: string[];
 
@@ -207,7 +521,7 @@ export class CommandProcessor {
         for (var val of fileNames) {
             var fullName: string = path.join(sourceFolder, val);
 
-            this.bindFile(fullName, destinationFolder);
+            this.bindFile(fullName, destinationFolder, rootFolder, navTree);
         }
 
         var directoryNames: string[];
@@ -223,11 +537,12 @@ export class CommandProcessor {
 
             console.log(`${fullName} --> ${fullTargetName}`);
 
-            this.bindFolder(fullName, fullTargetName);
+            this.bindFolder(fullName, fullTargetName, rootFolder, navTree);
         }
+        navTree.appendLine(`</ul>`);
     }
 
-    bindFile(sourceFileName: string, destinationFolder: string) {
+    bindFile(sourceFileName: string, destinationFolder: string, rootFolder: string, navTree:StringBuilder) {
 
         var ext = this.fileExtension(sourceFileName);
         console.log(`Bind file with extension = ${ext}`);
@@ -235,13 +550,13 @@ export class CommandProcessor {
         switch(ext)
         {
             case "c4dsl":
-                this.bindC4DslFile(sourceFileName, destinationFolder);
+                this.bindC4DslFile(sourceFileName, destinationFolder, rootFolder, navTree);
                 break;
             case "flow":
-                this.bindFlowDslFile(sourceFileName, destinationFolder);
+                this.bindFlowDslFile(sourceFileName, destinationFolder, rootFolder, navTree);
                 break;
             case "md":
-                this.bindMarkdownFile(sourceFileName, destinationFolder);
+                this.bindMarkdownFile(sourceFileName, destinationFolder, rootFolder, navTree);
                 break;
             }
 
@@ -255,8 +570,10 @@ export class CommandProcessor {
 
     }
 
-    bindC4DslFile(sourceFileName: string, destinationFolder: string) {
+    bindC4DslFile(sourceFileName: string, destinationFolder: string, rootFolder: string, navTree:StringBuilder) {
         var filename = this.fileNameOnly(sourceFileName);
+
+//        navTree.appendLine(`				<li><a href="#" class="page" onClick="newSite(\`my%20space%20section/combined.html\`)">${filename}</a></li>`);
 
         const fullText = fs.readFileSync(sourceFileName).toString('utf-8');
 
@@ -303,8 +620,10 @@ export class CommandProcessor {
         console.log(`${sourceFileName} --> ${imgName}`);
     }
 
-    bindFlowDslFile(sourceFileName: string, destinationFolder: string) {
+    bindFlowDslFile(sourceFileName: string, destinationFolder: string, rootFolder: string, navTree:StringBuilder) {
         var filename = this.fileNameOnly(sourceFileName);
+
+//        navTree.appendLine(`				<li><a href="#" class="page" onClick="newSite(\`my%20space%20section/combined.html\`)">${filename}</a></li>`);
 
         const fullText = fs.readFileSync(sourceFileName).toString('utf-8');
 
@@ -337,7 +656,7 @@ export class CommandProcessor {
         console.log(`${sourceFileName} --> ${imgName}`);
     }
 
-    bindMarkdownFile(sourceFileName: string, destinationFolder: string) {
+    bindMarkdownFile(sourceFileName: string, destinationFolder: string, rootFolder: string, navTree:StringBuilder) {
         var filename = this.fileNameOnly(sourceFileName);
 
         const fullText = fs.readFileSync(sourceFileName).toString('utf-8');
@@ -349,6 +668,12 @@ export class CommandProcessor {
         newText = mdConvert.markdownToHtml (fullText);
 
         fs.writeFileSync(htmlName, newText);
+
+        var urlPath = htmlName.substring(rootFolder.length + 1);
+        urlPath = this.fixPathName(urlPath);
+
+        navTree.appendLine(`				<li><a href="#" class="page" onClick="newSite(\`${urlPath}\`)">${filename}</a></li>`);
+
         console.log(`${sourceFileName} --> ${htmlName}`);
     }
 
@@ -400,9 +725,27 @@ export class CommandProcessor {
         // https://www.w3schools.com/nodejs/met_path_basename.asp
         var noPath = path.basename(fileName);
         var ext = this.fileExtension(noPath);
-        var nameOnly = noPath.substring(0, noPath.length - ext.length - 1);
+        var nameOnly = noPath.substring(0, noPath.length - ext.length);
+
+        // remove the trailing period if necessary
+        if(nameOnly.endsWith('.')){
+            nameOnly = nameOnly.substring(0, nameOnly.length - 1);
+        }
 
         return nameOnly;
      }
+
+     getFolderName(fileName:string) : string{
+        // https://www.w3schools.com/nodejs/met_path_basename.asp
+        var pathOnly = path.dirname(fileName);
+        return pathOnly;
+     }
      
+     fixPathName(pathName: string): string{
+        var rtnVal:string = pathName;
+
+        rtnVal = rtnVal.split(' ').join('%20');
+        rtnVal = rtnVal.split('\\').join('/');
+        return rtnVal;
+     }
 }
