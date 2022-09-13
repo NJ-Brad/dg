@@ -1,0 +1,50 @@
+flow 
+[
+	' https://mermaid-js.github.io/mermaid/#/flowchart
+    Start
+	"Loan Type" LoanType
+	"Home Description" HomeDescription
+' Renamed from ShowOnlyForPurchase
+    decision "LoanTypeIsPurchase" d1
+	[
+		Yes TimeframeToPurchase
+		No d2
+	]
+	"Time to Purchase" TimeframeToPurchase
+    decision "LoanTypeIsPurchase" d2
+	[
+		Yes FirstTimeHomeBuyer
+		No d3
+	]
+	"First Time Home Buyer" FirstTimeHomeBuyer
+` renamed from ShowOnlyForCashoutAndRefinance,	
+    decision "LoanTypeIsCashoutOrRefinance" d3
+	[
+		Yes HomeValue
+		No d4
+	]
+	"Home Value" HomeValue
+    decision "LoanTypeIsCashoutOrRefinance" d4
+	[
+		Yes MortgageBalance
+		No Military
+	]
+	"Mortgage Balance" MortgageBalance
+	"Military" Military
+	"Working With an Agent" WorkingWithAnAgent
+    decision "LoanTypeIsPurchase" d5
+	[
+		Yes PurchasePrice
+		No d6
+	]
+	"Purchase Price" PurchasePrice
+    decision "LoanTypeIsPurchase" d6
+	[
+		Yes DownPayment
+		No CreditProfile
+	]
+	"Down Payment" DownPayment
+	"Credit Profile" CreditProfile
+	"Personal Info" PersonalInfo
+	End
+]
