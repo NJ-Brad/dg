@@ -18,6 +18,11 @@ import { BlockToFlowchartConverter} from "./dsl/flow/BlockToFlowchartConverter";
 import { FlowchartWorkspace } from "./dsl/flow/FlowchartWorkspace";
 import { FlowchartPublisher } from "./dsl/flow/FlowchartPublisher";
 
+import {BlockToWorkItemsConverter} from "./Dsl/workItem/BlockToWorkItemsConverter";
+import {WorkItemWorkspace} from "./Dsl/workItem/WorkItemWorkspace";
+import {WorkItemPublisher} from "./Dsl/workItem/WorkItemPublisher";
+
+
 import * as mdConvert from "./MarkdownToHtml";
 
 export class CommandProcessor {
@@ -96,6 +101,9 @@ export class CommandProcessor {
                 break;
             case 'C4DSL':
                 newText = this.createDefaultC4DslFile();
+                break;
+            case 'work':
+                newText = this.createDefaultWorkFile();
                 break;
         }
 
@@ -452,7 +460,18 @@ export class CommandProcessor {
     sb.appendLine(`</html>`);
     sb.appendLine(``);
     return sb.text;
-}
+   }
+
+    createDefaultWorkFile(): string{ 
+        var sb:StringBuilder = new StringBuilder();
+        sb.appendLine(`var sb:StringBuilder = new StringBuilder();`);
+        sb.appendLine(`Title:This is a sample project`);
+        sb.appendLine(`StartDate:2022-08-31`);
+        sb.appendLine(`3188738\`"ALF [Onboarding] Nested Questions - Smart Form"\`5`);
+        sb.appendLine(`3188725\`"ALF [Onboarding] Nested Question Set | UI"\`5\`3188738,2022-09-01`);
+
+        return sb.text;
+   }
 
     processImportCommand(myArgs: string[]) {
         // copy file to selected book/section/page
@@ -557,6 +576,9 @@ export class CommandProcessor {
                 break;
             case "md":
                 this.bindMarkdownFile(sourceFileName, destinationFolder, rootFolder, navTree);
+                break;
+            case "work":
+                this.bindWorkItemFile(sourceFileName, destinationFolder, rootFolder, navTree);
                 break;
             }
 
@@ -675,6 +697,40 @@ export class CommandProcessor {
         navTree.appendLine(`				<li><a href="#" class="page" onClick="newSite(\`${urlPath}\`)">${filename}</a></li>`);
 
         console.log(`${sourceFileName} --> ${htmlName}`);
+    }
+
+    bindWorkItemFile(sourceFileName: string, destinationFolder: string, rootFolder: string, navTree:StringBuilder) {
+        var filename = this.fileNameOnly(sourceFileName);
+
+        const fullText = fs.readFileSync(sourceFileName).toString('utf-8');
+
+        var stream: StringStream;
+        stream = new StringStream(fullText);
+        
+        var bp: BlockParser = new BlockParser();
+        
+        var block: Block = new Block();
+        bp.parse(block.children, stream, 0);
+        
+		var btd: BlockToWorkItemsConverter = new BlockToWorkItemsConverter();
+		
+		var ws: WorkItemWorkspace = btd.convert(block);
+		
+		var publisher: WorkItemPublisher = new WorkItemPublisher();
+        
+        var newText = "";
+        // var path = require('path');
+        // var dirName = path.dirname(myArgs[0]);
+        var outName : string;
+        var imgName : string;
+        var rnr: MermaidRunner = new MermaidRunner();
+
+        outName = this.getTempFileName();
+        imgName = path.join(destinationFolder, filename)+".png";
+        newText = publisher.publish(ws);
+        fs.writeFileSync(outName, newText);
+        rnr.convert(`\"${outName}\"`, `\"${imgName}\"`);
+        console.log(`${sourceFileName} --> ${imgName}`);
     }
 
     //https://stackoverflow.com/questions/7055061/nodejs-temporary-file-name    
